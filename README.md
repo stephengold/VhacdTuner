@@ -134,7 +134,7 @@ artists and software developers:
     + [Open Broadcaster Software Studio][obs]
 
 I am grateful to [GitHub], [Sonatype],
-[Travis], [MacStadium], [YouTube], and [Imgur]
+[MacStadium], [YouTube], and [Imgur]
 for providing free hosting for this project
 and many other open-source projects.
 
@@ -169,7 +169,6 @@ correct the situation: sgold@sonic.net
 [obs]: https://obsproject.com "Open Broadcaster Software Project"
 [project]: https://github.com/stephengold/VhacdTuner "VhacdTuner Project"
 [sonatype]: https://www.sonatype.com "Sonatype"
-[travis]: https://travis-ci.com "Travis CI"
 [utilities]: https://github.com/stephengold/jme3-utilities "Jme3-utilities Project"
 [vhacd]: https://github.com/kmammou/v-hacd "V-HACD Library"
 [vhacdBindings]: https://github.com/riccardobl/v-hacd-java-bindings "Riccardo's V-hacd-java-bindings Project"

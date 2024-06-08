@@ -13,7 +13,7 @@ java {
 }
 
 application {
-    mainClass = "jme3utilities.minie.tuner.VhacdTuner"
+    mainClass = "com.github.stephengold.tuner.VhacdTuner"
 }
 tasks.named<Jar>("jar") {
     manifest {

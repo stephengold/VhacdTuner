@@ -29,4 +29,4 @@
 /**
  * A GUI application to configure V-HACD for a C-G model.
  */
-package jme3utilities.minie.tuner;
+package com.github.stephengold.tuner;

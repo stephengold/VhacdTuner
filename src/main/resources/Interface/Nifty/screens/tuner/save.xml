@@ -32,7 +32,7 @@
 Nifty XML to lay out the GUI for the "save" screen of VhacdTuner.
 -->
 <nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui">
-    <screen id="save" controller="jme3utilities.minie.tuner.SaveScreen">
+    <screen id="save" controller="com.github.stephengold.tuner.SaveScreen">
         <layer childLayout="vertical" backgroundColor="#aaaf">
             <control name="radioButtonGroup" id="left" />
             <control name="radioButtonGroup" id="right" />

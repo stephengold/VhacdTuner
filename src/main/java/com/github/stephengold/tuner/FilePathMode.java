@@ -26,14 +26,13 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jme3utilities.minie.tuner;
+package com.github.stephengold.tuner;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.cursors.plugins.JmeCursor;
-import com.jme3.input.CameraInput;
 import com.jme3.input.KeyInput;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,36 +41,38 @@ import jme3utilities.Validate;
 import jme3utilities.ui.InputMode;
 
 /**
- * Input mode for the "load" screen of VhacdTuner.
+ * Input mode for the "filePath" screen of VhacdTuner.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class LoadMode extends InputMode {
+class FilePathMode extends InputMode {
     // *************************************************************************
     // constants and loggers
 
     /**
      * message logger for this class
      */
-    final static Logger logger = Logger.getLogger(LoadMode.class.getName());
+    final static Logger logger = Logger.getLogger(FilePathMode.class.getName());
     /**
      * asset path to the cursor for this mode
      */
     final private static String assetPath = "Textures/cursors/default.cur";
     /**
-     * action strings:
+     * action-string prefix to alter the filesystem path prefix
      */
-    final private static String asLoad = "load";
-    final private static String asMorePath = "more path";
-    final private static String asMoreRoot = "more root";
+    final private static String apSetPathPrefix = "set pathPrefix ";
+    /**
+     * action string to browse the filesystem
+     */
+    final private static String asBrowse = "browse";
     // *************************************************************************
     // constructors
 
     /**
      * Instantiate a disabled, uninitialized mode.
      */
-    LoadMode() {
-        super("load");
+    FilePathMode() {
+        super("filePath");
     }
     // *************************************************************************
     // InputMode methods
@@ -86,20 +87,8 @@ class LoadMode extends InputMode {
         bind(Action.editBindings, KeyInput.KEY_F1);
         bind(Action.editDisplaySettings, KeyInput.KEY_F2);
 
-        bind(Action.previousScreen, KeyInput.KEY_PGUP, KeyInput.KEY_B);
-        bind(Action.nextScreen, KeyInput.KEY_PGDN, KeyInput.KEY_N);
-
-        bindSignal(CameraInput.FLYCAM_BACKWARD, KeyInput.KEY_S);
-        bindSignal(CameraInput.FLYCAM_FORWARD, KeyInput.KEY_W);
-        bindSignal(CameraInput.FLYCAM_LOWER, KeyInput.KEY_Z);
-        bindSignal(CameraInput.FLYCAM_RISE, KeyInput.KEY_Q);
-        bindSignal("orbitLeft", KeyInput.KEY_A);
-        bindSignal("orbitRight", KeyInput.KEY_D);
-
-        bind(Action.dumpPhysicsSpace, KeyInput.KEY_O);
         bind(Action.dumpRenderer, KeyInput.KEY_P);
-
-        bind(SimpleApplication.INPUT_MAPPING_CAMERA_POS, KeyInput.KEY_C);
+        bind(Action.nextScreen, KeyInput.KEY_PGDN, KeyInput.KEY_N);
     }
 
     /**
@@ -136,39 +125,23 @@ class LoadMode extends InputMode {
 
         boolean handled = false;
         if (ongoing) {
-            Model model = VhacdTuner.getModel();
-            LoadScreen screen = VhacdTuner.findAppState(LoadScreen.class);
+            FilePathScreen screen
+                    = VhacdTuner.findAppState(FilePathScreen.class);
             assert screen.isEnabled();
 
-            handled = true;
-            switch (actionString) {
-                case asLoad:
-                    model.load();
-                    break;
+            if (asBrowse.equals(actionString)) {
+                screen.browse();
+                handled = true;
 
-                case asMorePath:
-                    model.morePath();
-                    break;
+            } else if (actionString.startsWith(apSetPathPrefix)) {
+                String pathPrefix
+                        = MyString.remainder(actionString, apSetPathPrefix);
+                screen.setPathPrefix(pathPrefix);
+                handled = true;
 
-                case asMoreRoot:
-                    model.moreRoot();
-                    break;
-
-                case Action.nextScreen:
-                    nextScreen();
-                    break;
-
-                case Action.previousScreen:
-                    model.unload();
-                    previousScreen();
-                    break;
-
-                case Action.toggleAxes:
-                    screen.toggleShowingAxes();
-                    break;
-
-                default:
-                    handled = false;
+            } else if (Action.nextScreen.equals(actionString)) {
+                nextScreen();
+                handled = true;
             }
         }
         if (!handled) {
@@ -179,23 +152,17 @@ class LoadMode extends InputMode {
     // private methods
 
     /**
-     * Advance to the TestScreen if possible.
+     * Advance to the LoadScreen if possible.
      */
     private void nextScreen() {
-        String feedback = LoadScreen.feedback();
+        FilePathScreen screen = VhacdTuner.findAppState(FilePathScreen.class);
+        assert screen.isEnabled();
+
+        String feedback = FilePathScreen.feedback();
         if (feedback.isEmpty()) {
             setEnabled(false);
-            InputMode test = InputMode.findMode("test");
-            test.setEnabled(true);
+            InputMode load = InputMode.findMode("load");
+            load.setEnabled(true);
         }
-    }
-
-    /**
-     * Go back to the FilePathScreen.
-     */
-    private void previousScreen() {
-        setEnabled(false);
-        InputMode filePath = InputMode.findMode("filePath");
-        filePath.setEnabled(true);
     }
 }

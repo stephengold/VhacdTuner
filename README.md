@@ -69,8 +69,6 @@ You can restore the project to a pristine state:
 
 ## Conventions
 
-Package names begin with `jme3utilities.`
-
 The source code and pre-built executables are compatible with JDK 8.
 
 [Jump to the table of contents](#toc)

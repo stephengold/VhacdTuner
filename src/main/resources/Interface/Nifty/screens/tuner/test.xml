@@ -32,7 +32,7 @@
 Nifty XML to lay out the GUI for the "test" screen of VhacdTuner.
 -->
 <nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui">
-    <screen id="test" controller="jme3utilities.minie.tuner.TestScreen">
+    <screen id="test" controller="com.github.stephengold.tuner.TestScreen">
         <layer childLayout="vertical">
             <panel childLayout="horizontal" backgroundColor="#aaaf" height="25px">
                 <panel/>

@@ -26,53 +26,61 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jme3utilities.minie.tuner;
+package com.github.stephengold.tuner;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.cursors.plugins.JmeCursor;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.binary.BinaryExporter;
 import com.jme3.input.KeyInput;
+import com.jme3.scene.Spatial;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jme3utilities.Heart;
 import jme3utilities.MyString;
 import jme3utilities.Validate;
+import jme3utilities.ui.ActionApplication;
 import jme3utilities.ui.InputMode;
 
 /**
- * Input mode for the "filePath" screen of VhacdTuner.
+ * Input mode for the "save" screen of VhacdTuner.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class FilePathMode extends InputMode {
+class SaveMode extends InputMode {
     // *************************************************************************
     // constants and loggers
 
     /**
      * message logger for this class
      */
-    final static Logger logger = Logger.getLogger(FilePathMode.class.getName());
+    final static Logger logger = Logger.getLogger(SaveMode.class.getName());
     /**
      * asset path to the cursor for this mode
      */
     final private static String assetPath = "Textures/cursors/default.cur";
     /**
-     * action-string prefix to alter the filesystem path prefix
+     * action strings specific to this input mode:
      */
-    final private static String apSetPathPrefix = "set pathPrefix ";
-    /**
-     * action string to browse the filesystem
-     */
-    final private static String asBrowse = "browse";
+    final private static String asSaveJ3o = "save j3o";
+    final private static String asSaveJava = "save java";
     // *************************************************************************
     // constructors
 
     /**
      * Instantiate a disabled, uninitialized mode.
      */
-    FilePathMode() {
-        super("filePath");
+    SaveMode() {
+        super("save");
     }
     // *************************************************************************
     // InputMode methods
@@ -88,7 +96,7 @@ class FilePathMode extends InputMode {
         bind(Action.editDisplaySettings, KeyInput.KEY_F2);
 
         bind(Action.dumpRenderer, KeyInput.KEY_P);
-        bind(Action.nextScreen, KeyInput.KEY_PGDN, KeyInput.KEY_N);
+        bind(Action.previousScreen, KeyInput.KEY_PGUP, KeyInput.KEY_B);
     }
 
     /**
@@ -125,23 +133,22 @@ class FilePathMode extends InputMode {
 
         boolean handled = false;
         if (ongoing) {
-            FilePathScreen screen
-                    = VhacdTuner.findAppState(FilePathScreen.class);
-            assert screen.isEnabled();
+            handled = true;
+            switch (actionString) {
+                case Action.previousScreen:
+                    previousScreen();
+                    break;
 
-            if (asBrowse.equals(actionString)) {
-                screen.browse();
-                handled = true;
+                case asSaveJava:
+                    saveJava();
+                    break;
 
-            } else if (actionString.startsWith(apSetPathPrefix)) {
-                String pathPrefix
-                        = MyString.remainder(actionString, apSetPathPrefix);
-                screen.setPathPrefix(pathPrefix);
-                handled = true;
+                case asSaveJ3o:
+                    saveJ3o();
+                    break;
 
-            } else if (Action.nextScreen.equals(actionString)) {
-                nextScreen();
-                handled = true;
+                default:
+                    handled = false;
             }
         }
         if (!handled) {
@@ -152,17 +159,87 @@ class FilePathMode extends InputMode {
     // private methods
 
     /**
-     * Advance to the LoadScreen if possible.
+     * Go back to the TestScreen.
      */
-    private void nextScreen() {
-        FilePathScreen screen = VhacdTuner.findAppState(FilePathScreen.class);
+    private void previousScreen() {
+        setEnabled(false);
+        InputMode test = InputMode.findMode("test");
+        test.setEnabled(true);
+    }
+
+    /**
+     * Write the best decomposition to a file, along with the C-G model.
+     */
+    private static void saveJ3o() {
+        Model model = VhacdTuner.getModel();
+        DecompositionTest best = model.findRankedTest(0);
+        CollisionShape bestShape = best.getShape();
+        RigidBodyControl rbc = new RigidBodyControl(bestShape);
+
+        String originalPath = model.filePath();
+        File originalFile = new File(originalPath);
+        String modelName = originalFile.getName();
+        if (modelName.endsWith(".j3o")) {
+            modelName = MyString.removeSuffix(modelName, ".j3o");
+        } else if (modelName.endsWith(".glb")) {
+            modelName = MyString.removeSuffix(modelName, ".glb");
+        } else if (modelName.endsWith(".gltf")) {
+            modelName = MyString.removeSuffix(modelName, ".gltf");
+        }
+
+        String hhmmss = ActionApplication.hhmmss();
+        String outputFileName = String.format("%s-%s.j3o", modelName, hhmmss);
+        String outputFilePath = ActionApplication.filePath(outputFileName);
+
+        Spatial modelRoot = model.getRootSpatial();
+        modelRoot = Heart.deepCopy(modelRoot);
+        modelRoot.addControl(rbc);
+
+        JmeExporter exporter = BinaryExporter.getInstance();
+        File outputFile = new File(outputFilePath);
+        SaveScreen screen = VhacdTuner.findAppState(SaveScreen.class);
         assert screen.isEnabled();
 
-        String feedback = FilePathScreen.feedback();
-        if (feedback.isEmpty()) {
-            setEnabled(false);
-            InputMode load = InputMode.findMode("load");
-            load.setEnabled(true);
+        try {
+            exporter.save(modelRoot, outputFile);
+        } catch (IOException exception) {
+            screen.showInfoDialog("Exception", exception.toString());
+            return;
         }
+
+        // Display a confirmation dialog.
+        String message = String.format(
+                "The model and configured control have been written to%n%s.",
+                MyString.quote(outputFilePath));
+        screen.showInfoDialog("Success", message);
+    }
+
+    /**
+     * Write the best parameters to a file.
+     */
+    private static void saveJava() {
+        Model model = VhacdTuner.getModel();
+        DecompositionTest best = model.findRankedTest(0);
+
+        String hhmmss = ActionApplication.hhmmss();
+        String fileName = String.format("configure%s.java", hhmmss);
+
+        SaveScreen screen = VhacdTuner.findAppState(SaveScreen.class);
+        assert screen.isEnabled();
+
+        String path = ActionApplication.filePath(fileName);
+        File file = new File(path);
+        try (PrintStream stream = new PrintStream(file)) {
+            best.write(stream);
+        } catch (FileNotFoundException exception) {
+            screen.showInfoDialog("Exception", exception.toString());
+            return;
+        }
+
+        // Display a confirmation dialog.
+        String message = String.format(
+                "The parameters have been written to%n%s.",
+                MyString.quote(path));
+        screen.showInfoDialog("Success", message);
     }
 }

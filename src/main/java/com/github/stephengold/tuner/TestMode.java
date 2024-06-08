@@ -26,7 +26,7 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jme3utilities.minie.tuner;
+package com.github.stephengold.tuner;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

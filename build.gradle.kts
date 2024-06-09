@@ -61,6 +61,9 @@ configurations.all {
 }
 
 dependencies {
+    if (!isMacOS) {
+        runtimeOnly(libs.jme3.awt.dialogs)
+    }
     runtimeOnly(libs.jme3.desktop)
     implementation(libs.heart)
     implementation(libs.minie)

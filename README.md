@@ -167,7 +167,6 @@ correct the situation: sgold@sonic.net
 [obs]: https://obsproject.com "Open Broadcaster Software Project"
 [project]: https://github.com/stephengold/VhacdTuner "VhacdTuner Project"
 [sonatype]: https://www.sonatype.com "Sonatype"
-[utilities]: https://github.com/stephengold/jme3-utilities "Jme3-utilities Project"
 [vhacd]: https://github.com/kmammou/v-hacd "V-HACD Library"
 [vhacdBindings]: https://github.com/riccardobl/v-hacd-java-bindings "Riccardo's V-hacd-java-bindings Project"
 [youtube]: https://www.youtube.com/ "YouTube"

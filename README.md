@@ -1,7 +1,7 @@
 <img height="150" src="https://i.imgur.com/YEPFEcx.png" alt="Minie Project logo">
 
 [VhacdTuner][project] is a GUI application
-to tune [the V-HACD algorithm][vhacd] for a particular mesh.
+to tune [the V-HACD algorithm][vhacd] for a specific 3-D mesh.
 
 Complete source code (in Java) is provided under
 [a 3-clause BSD license][license].
@@ -80,7 +80,7 @@ The source code and pre-built executables are compatible with JDK 8.
 
 + [V-HACD v4 slideshow](https://docs.google.com/presentation/d/1OZ4mtZYrGEC8qffqb8F7Le2xzufiqvaPpRbLHKKgTIM)
 
-YouTube videos about Minie:
+YouTube videos about VhacdTuner:
 
   + August 2022 walkthru of the VhacdTuner application
     [watch](https://www.youtube.com/watch?v=iEWJtPujmM8) (7:45)

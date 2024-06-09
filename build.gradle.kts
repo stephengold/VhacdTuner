@@ -7,6 +7,8 @@ plugins {
     checkstyle  // to analyze Java sourcecode for style violations
 }
 
+val isMacOS = DefaultNativePlatform.getCurrentOperatingSystem().isMacOsX()
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -14,6 +16,18 @@ java {
 
 application {
     mainClass = "com.github.stephengold.tuner.VhacdTuner"
+}
+if (!isMacOS) {
+    tasks.register<JavaExec>("runShowDialog") {
+        args("--showSettingsDialog")
+        description = "Runs the tuner, displaying a dialog if no settings found."
+        mainClass = application.mainClass
+    }
+    tasks.register<JavaExec>("runForceDialog") {
+        args("--forceDialog")
+        description = "Runs the tuner after displaying the Settings dialog."
+        mainClass = application.mainClass
+    }
 }
 tasks.named<Jar>("jar") {
     manifest {
@@ -39,13 +53,9 @@ tasks.withType<JavaCompile>().all { // Java compile-time options:
     }
 }
 
-val isMacOS = DefaultNativePlatform.getCurrentOperatingSystem().isMacOsX()
-
 tasks.withType<JavaExec>().all { // Java runtime options:
     if (isMacOS) {
         jvmArgs("-XstartOnFirstThread")
-    } else {
-        args("--showSettingsDialog")
     }
     args("--openGL3")
     //args("--verbose") // to enable additional log output

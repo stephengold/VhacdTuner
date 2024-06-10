@@ -93,6 +93,9 @@ YouTube videos about VhacdTuner:
 
 ## History
 
+Some of the origial source code
+was derived from [the DacWizard project][dacwizard].
+
 From August 2022 to June 2024, VhacdTuner was a subproject of
 [the Minie Project][minie].
 
@@ -146,6 +149,7 @@ correct the situation: sgold@sonic.net
 
 [adoptium]: https://adoptium.net/releases.html "Adoptium Project"
 [checkstyle]: https://checkstyle.org "Checkstyle"
+[dacwizard]: https://github.com/stephengold/DacWizard "DacWizard Project"
 [firefox]: https://www.mozilla.org/en-US/firefox "Firefox"
 [fish]: https://fishshell.com/ "Fish command-line shell"
 [git]: https://git-scm.com "Git"

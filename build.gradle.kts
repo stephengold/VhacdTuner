@@ -18,14 +18,14 @@ application {
     mainClass = "com.github.stephengold.tuner.VhacdTuner"
 }
 if (!isMacOS) {
-    tasks.register<JavaExec>("runShowDialog") {
-        args("--showSettingsDialog")
-        description = "Runs the tuner, displaying a dialog if no settings found."
-        mainClass = application.mainClass
-    }
     tasks.register<JavaExec>("runForceDialog") {
         args("--forceDialog")
         description = "Runs the tuner after displaying the Settings dialog."
+        mainClass = application.mainClass
+    }
+    tasks.register<JavaExec>("runShowDialog") {
+        args("--showSettingsDialog")
+        description = "Runs the tuner, displaying a dialog if no settings found."
         mainClass = application.mainClass
     }
 }

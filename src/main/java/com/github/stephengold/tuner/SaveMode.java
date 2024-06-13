@@ -77,7 +77,7 @@ class SaveMode extends InputMode {
     // constructors
 
     /**
-     * Instantiate a disabled, uninitialized mode.
+     * Instantiate a disabled, uninitialized input mode.
      */
     SaveMode() {
         super("save");
@@ -159,7 +159,7 @@ class SaveMode extends InputMode {
     // private methods
 
     /**
-     * Go back to the TestScreen.
+     * Go back to the "test" screen.
      */
     private void previousScreen() {
         setEnabled(false);

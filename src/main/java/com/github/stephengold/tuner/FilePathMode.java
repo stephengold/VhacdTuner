@@ -69,7 +69,7 @@ class FilePathMode extends InputMode {
     // constructors
 
     /**
-     * Instantiate a disabled, uninitialized mode.
+     * Instantiate a disabled, uninitialized input mode.
      */
     FilePathMode() {
         super("filePath");
@@ -152,7 +152,7 @@ class FilePathMode extends InputMode {
     // private methods
 
     /**
-     * Advance to the LoadScreen if possible.
+     * Advance to the "load" screen if possible.
      */
     private void nextScreen() {
         FilePathScreen screen = VhacdTuner.findAppState(FilePathScreen.class);

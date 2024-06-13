@@ -340,7 +340,7 @@ class Model {
     }
 
     /**
-     * Read the exception that occurred during the most recent load attempt.
+     * Return the exception that occurred during the most recent load attempt.
      *
      * @return the exception message, or "" if none
      */

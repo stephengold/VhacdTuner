@@ -158,7 +158,7 @@ class TestMode extends InputMode {
     // constructors
 
     /**
-     * Instantiate a disabled, uninitialized mode.
+     * Instantiate a disabled, uninitialized input mode.
      */
     TestMode() {
         super("test");
@@ -341,7 +341,7 @@ class TestMode extends InputMode {
     // private methods
 
     /**
-     * Advance to the SaveScreen if possible.
+     * Advance to the "save" screen if possible.
      */
     private void nextScreen() {
         setEnabled(false);
@@ -350,7 +350,7 @@ class TestMode extends InputMode {
     }
 
     /**
-     * Go back to the LoadScreen.
+     * Go back to the "load" screen.
      */
     private void previousScreen() {
         setEnabled(false);

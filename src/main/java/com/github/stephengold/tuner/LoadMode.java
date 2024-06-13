@@ -68,7 +68,7 @@ class LoadMode extends InputMode {
     // constructors
 
     /**
-     * Instantiate a disabled, uninitialized mode.
+     * Instantiate a disabled, uninitialized input mode.
      */
     LoadMode() {
         super("load");
@@ -179,7 +179,7 @@ class LoadMode extends InputMode {
     // private methods
 
     /**
-     * Advance to the TestScreen if possible.
+     * Advance to the "test" screen if possible.
      */
     private void nextScreen() {
         String feedback = LoadScreen.feedback();
@@ -191,7 +191,7 @@ class LoadMode extends InputMode {
     }
 
     /**
-     * Go back to the FilePathScreen.
+     * Go back to the "filePath" screen.
      */
     private void previousScreen() {
         setEnabled(false);

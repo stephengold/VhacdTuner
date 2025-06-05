@@ -1,4 +1,4 @@
-// Gradle script to build the VhacdTuner project
+// Gradle script to build and run the VhacdTuner project
 
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
@@ -88,7 +88,7 @@ dependencies {
     runtimeOnly(libs.nifty.style.black)
 
     // VhacdTuner doesn't use jme3-jogg
-    //  -- it is included solely to avoid warnings from AssetConfig.
+    //  -- it is included solely to avoid warnings from AssetConfig:
     runtimeOnly(libs.jme3.jogg)
 }
 

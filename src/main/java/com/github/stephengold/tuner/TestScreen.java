@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2019-2022 Stephen Gold
+ Copyright (c) 2019-2025 Stephen Gold
 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -364,6 +364,9 @@ class TestScreen extends GuiScreenController {
         rightCamera.setRotation(orientation);
     }
 
+    /**
+     * Update both cameras.
+     */
     private void updateCameras() {
         float screenWidth = cam.getWidth(); // pixels
         float viewPortWidth = (screenWidth - guiWidth) / (2f * screenWidth);

@@ -98,6 +98,7 @@
         <module name="MutableException"/>
         <module name="OneTopLevelClass"/>
         <module name="ThrowsCount">
+            <property name="ignorePrivateMethods" value="false"/>
             <property name="max" value="1"/>
         </module>
 
@@ -258,7 +259,7 @@
             <message key="name.invalidPattern" value="Package name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="ParameterName">
-            <property name="format" value="^[a-z][A-Za-z]{0,16}$"/>
+            <property name="format" value="^[a-z][A-Za-z]{0,15}$"/>
             <message key="name.invalidPattern" value="Parameter name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="PatternVariableName">

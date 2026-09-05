@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2019-2025 Stephen Gold
+ Copyright (c) 2019-2026 Stephen Gold
 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -246,7 +246,7 @@ class TestScreen extends GuiScreenController {
         Material wireframe = MyAsset.createWireframeMaterial(
                 assetManager, ColorRGBA.Yellow);
         wireframe.getAdditionalRenderState()
-                .setWireframe(true); // TODO Why is this necessary?
+                .setWireframe(true); // TODO: Why is this necessary?
         wireframe.setName("wireframe");
         for (Geometry geometry : geometries) {
             geometry.setMaterial(wireframe);
